@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Smart Insurance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h1 style="color: #28a745;">QuickShield AI</h1>
+            <p>Smart Insurance for Blinkit & Zepto Partners</p>
+        </div>        
+        <div class="card" style="text-align:center;">
+            <h2>Partner Login</h2>
+
+            <!-- Name -->
+            <label>Name</label>
+            <input type="text" id="userName" placeholder="Enter your name" required>
+
+            <!-- Phone -->
+            <label>Phone Number</label>
+            <input type="text" id="phone" placeholder="Enter phone no." required>
+
+            <!-- Platform -->
+            <label>Select Platform</label>
+            <select id="platform">
+                <option value="">--Select Platform--</option>
+                <option value="Blinkit">Blinkit</option>
+                <option value="Zepto">Zepto</option>
+            </select>
+
+            <!-- Login Button -->
+            <button id="loginBtn">Login to Dashboard</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Connect button to function
+        document.getElementById("loginBtn").addEventListener("click", handleLogin);
+    </script>
+</body>
+</html>

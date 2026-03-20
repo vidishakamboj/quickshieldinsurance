@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Partner Dashboard - Smart Insurance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <strong>Delivery Guard</strong>
+            <div>
+                <a href="dashboard.html">File Claim</a>
+                <a href="status.html">My Claims</a>
+                <a href="index.html" style="color: red;">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="user-info">
+            <h3>Welcome, <span id="displayUser">Partner</span></h3>
+            <p>Platform: <span id="displayPlatform">Blinkit/Zepto</span></p>
+        </div>
+
+        <div class="card">
+            <h2>Submit New Claim</h2>
+            <p style="font-size: 0.8rem; color: #666;">Note: Speed and Location are captured automatically for verification.</p>
+            
+            <label>Nature of Incident</label>
+            <select id="claimType">
+                <option value="Accident">Road Accident</option>
+                <option value="Weather Damage">Heavy Rain/Weather Damage</option>
+                <option value="Vehicle Breakdown">Vehicle Breakdown</option>
+                <option value="Medical Emergency">Medical Emergency</option>
+            </select>
+
+            <label>Current Speed (km/h)</label>
+            <input type="number" id="speed" placeholder="Enter speed at time of incident">
+
+            <div style="display: flex; gap: 10px;">
+                <div style="flex: 1;">
+                    <label>Latitude</label>
+                    <input type="number" id="lat" value="0" step="any">
+                </div>
+                <div style="flex: 1;">
+                    <label>Longitude</label>
+                    <input type="number" id="lon" value="0" step="any">
+                </div>
+            </div>
+            
+            <button onclick="fileClaim()" id="submitBtn">Submit Insurance Claim</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Auto-fill user data
+        document.getElementById('displayUser').innerText = localStorage.getItem('userId') || 'Partner';
+        document.getElementById('displayPlatform').innerText = localStorage.getItem('platform') || 'Delivery';
+
+        // Auto-capture GPS if allowed (Optional, defaults to 0 for fraud testing)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                document.getElementById('lat').value = pos.coords.latitude.toFixed(4);
+                document.getElementById('lon').value = pos.coords.longitude.toFixed(4);
+            });
+        }
+    </script>
+</body>
+</html>```
+
+### 2. script.js (Dashboard Logic)
+Add this logic to your existing `script.js` to handle the claim submission:
+
+```javascript
+async function fileClaim() {
+    const btn = document.getElementById('submitBtn');
+    const userId = localStorage.getItem('userId');
+    
+    const claimData = {
+        userId: userId,
+        claimType: document.getElementById('claimType').value,
+        speed: parseFloat(document.getElementById('speed').value) || 0,
+        lat: parseFloat(document.getElementById('lat').value),
+        lon: parseFloat(document.getElementById('lon').value),
+        browser: navigator.userAgent // Captures browser info for fraud detection
+    };
+
+    if (!claimData.speed || claimData.speed < 0) {
+        alert("Please enter a valid speed");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Processing...";
+
+    try {
+        const response = await fetch('http://localhost:3000/claim', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(claimData)
+        });
+
+        const result = await response.json();
+
+        if (result.status === "Suspicious") {
+            alert(`⚠️ ALERT: Claim flagged as SUSPICIOUS.\nReason: ${result.reason}`);
+        } else {
+            alert(`✅ Claim Submitted Successfully!\nStatus: ${result.status}\nEstimated Payout: ₹${result.payout}`);
+        }        window.location.href = 'status.html';
+    } catch (error) {
+        console.error("Error submitting claim:", error);
+        alert("Server error. Please ensure Node.js server is running.");    } finally {
+        btn.disabled = false;
+        btn.innerText = "Submit Insurance Claim";    }
+}

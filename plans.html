@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Plan - Smart Insurance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align: center;">Choose Your Insurance Plan</h2>
+
+        <div class="plan-row" style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+
+            <div class="card" style="border-left: 5px solid #28a745; text-align:center; width:250px;">
+                <h3>Basic</h3>
+                <p>Part-time riders</p>
+                <ul style="list-style:none; padding:0;">
+                    <li>Accident: ₹5,000</li>
+                    <li>Medical: ₹2,000</li>
+                </ul>
+                <p><strong>Price: ₹99/month</strong></p>
+                <button onclick="buyPlan('Basic')">Select</button>
+            </div>
+
+            <div class="card" style="border-left: 5px solid #007bff; text-align:center; width:250px;">
+                <h3>Standard</h3>
+                <p>Full-time riders</p>
+                <ul style="list-style:none; padding:0;">
+                    <li>Accident: ₹15,000</li>
+                    <li>Medical: ₹5,000</li>
+                    <li>Weather Protection</li>
+                </ul>
+                <p><strong>Price: ₹199/month</strong></p>
+                <button onclick="buyPlan('Standard')">Select</button>
+            </div>
+
+            <div class="card" style="border-left: 5px solid #ffc107; text-align:center; width:250px;">
+                <h3>Premium</h3>
+                <p>High-speed riders</p>
+                <ul style="list-style:none; padding:0;">
+                    <li>Accident: ₹50,000</li>
+                    <li>Full Medical Cover</li>
+                    <li>Device Protection</li>
+                </ul>
+                <p><strong>Price: ₹499/month</strong></p>
+                <button onclick="buyPlan('Premium')">Select</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
